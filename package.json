@@ -1,0 +1,29 @@
+{
+  "name": "infoskjerm-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "npm run webserver",
+    "webserver": "nodemon src/index.js --exec babel-node",
+    "build": "babel --production src -d dist",
+    "serve": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "nodemon": "^1.18.4"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0",
+    "babel-eslint": "^10.0.1"
+  }
+}
