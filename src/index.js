@@ -1,12 +1,23 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import cors from 'kcors';
+import parser from 'koa-bodyparser';
 import axios from 'axios';
 
 const app = new Koa();
+app.use(parser());
 const router = new Router();
 
 const eventsUrl = 'https://lego.abakus.no/api/v1/events/';
+
+const departuresUrl = 'https://atbapi.tar.io/api/v1/departures/'
+
+const busStops = [
+  {id: '16011265', direction: 'to', stop: 'glos'},
+  {id: '16010265', direction: 'from', stop: 'glos'},
+  {id: '16011376', direction: 'to', stop: 'prof'},
+  {id: '16010376', direction: 'from', stop: 'prof'},
+];
 
 const dateString = () => {
   const currentDate = new Date();
@@ -24,7 +35,26 @@ const events = async (ctx) => {
   ctx.body = eventsArray;
 };
 
+const bus = async (ctx) => {
+  const departuresList = await Promise.all(busStops.map((stop) => axios.get(departuresUrl + stop.id)));
+
+  const stops = departuresList.map(stop => stop.data.departures);
+
+  const returnData = {
+    to: { },
+    from: {},
+  };
+
+  stops.forEach((departures, index) => {
+    returnData[busStops[index].direction][busStops[index].stop] = departures;
+  })
+
+
+  ctx.body = returnData;
+};
+
 router.get('/events', events);
+router.get('/bus', bus);
 
 app.use(cors());
 
