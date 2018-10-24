@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
     "kcors": "^2.2.2",
     "koa": "^2.5.3",
