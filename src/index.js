@@ -12,11 +12,13 @@ const eventsUrl = 'https://lego.abakus.no/api/v1/events/';
 
 const departuresUrl = 'https://atbapi.tar.io/api/v1/departures/'
 
+const registrationUrl = 'https://lego.abakus.no/api/v1/events/'
+
 const busStops = [
-  {id: '16011265', direction: 'to', stop: 'glos'},
-  {id: '16010265', direction: 'from', stop: 'glos'},
-  {id: '16011376', direction: 'to', stop: 'prof'},
-  {id: '16010376', direction: 'from', stop: 'prof'},
+  { id: '16011265', direction: 'to', stop: 'glos' },
+  { id: '16010265', direction: 'from', stop: 'glos' },
+  { id: '16011376', direction: 'to', stop: 'prof' },
+  { id: '16010376', direction: 'from', stop: 'prof' },
 ];
 
 const dateString = () => {
@@ -26,13 +28,23 @@ const dateString = () => {
   const currentDay = (`0${currentDate.getDay()}`).slice(-2);
   const dateAfter = `date_after=${currentYear}-${currentMonth}-${currentDay}`;
   const dateBefore = `date_before=${currentYear + 1}-${currentMonth}-${currentDay}`;
-  return `?${dateAfter}&${dateBefore}&page_size=10`;
+  return `?${dateAfter}&${dateBefore}&page_size=30`;
 };
 
 const events = async (ctx) => {
   const eventsFromAbakus = await axios.get(eventsUrl + dateString());
   const eventsArray = eventsFromAbakus.data.results;
   ctx.body = eventsArray;
+  let eventsId = [];
+  let i = 0;
+  for (; i < eventsArray.length; i += 1) {
+    eventsId.push(eventsArray[i].id);
+  }
+  console.log(eventsId)
+  const registrationLink = await Promise.all(eventsId.map((x) => axios.get(registrationUrl + x)));
+  const registrationTime = registrationLink.map((y) => (y.data.pools.length > 0 ? y.data.pools[0].activationDate : null));
+  console.log(registrationTime);
+
 };
 
 const bus = async (ctx) => {
@@ -41,7 +53,7 @@ const bus = async (ctx) => {
   const stops = departuresList.map(stop => stop.data.departures);
 
   const returnData = {
-    to: { },
+    to: {},
     from: {},
   };
 
