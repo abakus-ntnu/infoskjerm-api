@@ -10,9 +10,9 @@ const router = new Router();
 
 const eventsUrl = 'https://lego.abakus.no/api/v1/events/';
 
-const departuresUrl = 'https://atbapi.tar.io/api/v1/departures/'
+const departuresUrl = 'https://atbapi.tar.io/api/v1/departures/';
 
-const registrationUrl = 'https://lego.abakus.no/api/v1/events/'
+const registrationUrl = 'https://lego.abakus.no/api/v1/events/';
 
 const busStops = [
   { id: '16011265', direction: 'to', stop: 'glos' },
@@ -35,20 +35,25 @@ const events = async (ctx) => {
   const eventsFromAbakus = await axios.get(eventsUrl + dateString());
   const eventsArray = eventsFromAbakus.data.results;
   ctx.body = eventsArray;
-  let eventsId = [];
+  const eventsId = [];
   let i = 0;
   for (; i < eventsArray.length; i += 1) {
     eventsId.push(eventsArray[i].id);
   }
-  console.log(eventsId)
-  const registrationLink = await Promise.all(eventsId.map((x) => axios.get(registrationUrl + x)));
-  const registrationTime = registrationLink.map((y) => (y.data.pools.length > 0 ? y.data.pools[0].activationDate : null));
-  console.log(registrationTime);
-
+  // console.log(eventsId);
+  const registrationLink = await Promise.all(eventsId.map(x => axios.get(registrationUrl + x)));
+  const registrationTime = registrationLink.map(y => (y.data.pools.length > 0 ? y.data.pools[0].activationDate : null));
+  let eventsReg = registrationLink
+    .map(y => (
+      y.data.pools.length > 0
+        ? { time: y.data.pools[0].activationDate, id: y.data.id }
+        : { time: null, id: y.data.id }));
+  eventsReg = eventsReg.sort((a, b) => (a.time < b.time ? -1 : 1));
+  console.log(eventsReg);
 };
 
 const bus = async (ctx) => {
-  const departuresList = await Promise.all(busStops.map((stop) => axios.get(departuresUrl + stop.id)));
+  const departuresList = await Promise.all(busStops.map(stop => axios.get(departuresUrl + stop.id)));
 
   const stops = departuresList.map(stop => stop.data.departures);
 
@@ -59,7 +64,7 @@ const bus = async (ctx) => {
 
   stops.forEach((departures, index) => {
     returnData[busStops[index].direction][busStops[index].stop] = departures;
-  })
+  });
 
 
   ctx.body = returnData;
