@@ -42,14 +42,13 @@ const events = async (ctx) => {
   }
   // console.log(eventsId);
   const registrationLink = await Promise.all(eventsId.map(x => axios.get(registrationUrl + x)));
-  const registrationTime = registrationLink.map(y => (y.data.pools.length > 0 ? y.data.pools[0].activationDate : null));
-  let eventsReg = registrationLink
+  let registrationTime = registrationLink
     .map(y => (
       y.data.pools.length > 0
         ? { time: y.data.pools[0].activationDate, id: y.data.id }
         : { time: null, id: y.data.id }));
-  eventsReg = eventsReg.sort((a, b) => (a.time < b.time ? -1 : 1));
-  console.log(eventsReg);
+  registrationTime = registrationTime.sort((a, b) => (a.time < b.time ? -1 : 1));
+  console.log(registrationTime);
 };
 
 const bus = async (ctx) => {
