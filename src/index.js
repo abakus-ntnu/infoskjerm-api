@@ -3,6 +3,7 @@ import Router from 'koa-router';
 import cors from 'kcors';
 import parser from 'koa-bodyparser';
 import axios from 'axios';
+import { getDiffieHellman } from 'crypto';
 
 const app = new Koa();
 app.use(parser());
@@ -48,7 +49,28 @@ const events = async (ctx) => {
         ? { time: y.data.pools[0].activationDate, id: y.data.id }
         : { time: null, id: y.data.id }));
   registrationTime = registrationTime.sort((a, b) => (a.time < b.time ? -1 : 1));
-  console.log(registrationTime);
+};
+
+const dateToFormattedMinutes = (date) => {
+  const minutes = date.getMinutes();
+  return (minutes.toString().length <= 1 ? `0${minutes}` : minutes);
+};
+
+
+const calculateTimeUntilDeparture = (currentTime, departure) => {
+  const departureTime = new Date(departure.registeredDepartureTime);
+  const timeDiff = Math.abs(departureTime.getTime() - currentTime.getTime());
+  const diffMinutes = Math.ceil(timeDiff / (1000 * 60));
+  if (diffMinutes <= 1) {
+    return 'Nå';
+  }
+  if (diffMinutes <= 10) {
+    return `${diffMinutes} min`;
+  }
+  if (diffMinutes > 10) {
+    return `${departureTime.getHours()}:${dateToFormattedMinutes(departureTime)}`;
+  }
+  return diffMinutes;
 };
 
 const bus = async (ctx) => {
@@ -60,9 +82,15 @@ const bus = async (ctx) => {
     to: {},
     from: {},
   };
+  const currentTime = new Date();
+  // currentTime.setHours(currentTime.getHours() + 1);
 
   stops.forEach((departures, index) => {
-    returnData[busStops[index].direction][busStops[index].stop] = departures;
+    returnData[busStops[index].direction][busStops[index].stop] = departures
+      .map(departure => ({
+        ...departure,
+        ...{ timeUntilDeparture: calculateTimeUntilDeparture(currentTime, departure) },
+      }));
   });
 
 
