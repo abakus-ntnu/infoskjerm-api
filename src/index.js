@@ -3,7 +3,6 @@ import Router from 'koa-router';
 import cors from 'kcors';
 import parser from 'koa-bodyparser';
 import axios from 'axios';
-import { getDiffieHellman } from 'crypto';
 
 const app = new Koa();
 app.use(parser());
@@ -41,7 +40,7 @@ const events = async (ctx) => {
   for (; i < eventsArray.length; i += 1) {
     eventsId.push(eventsArray[i].id);
   }
-  // console.log(eventsId);
+
   const registrationLink = await Promise.all(eventsId.map(x => axios.get(registrationUrl + x)));
   let registrationTime = registrationLink
     .map(y => (
@@ -83,7 +82,7 @@ const bus = async (ctx) => {
     from: {},
   };
   const currentTime = new Date();
-  // currentTime.setHours(currentTime.getHours() + 1);
+  currentTime.setHours(currentTime.getHours() + 1);
 
   stops.forEach((departures, index) => {
     returnData[busStops[index].direction][busStops[index].stop] = departures
