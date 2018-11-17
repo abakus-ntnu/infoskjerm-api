@@ -72,6 +72,7 @@ const calculateTimeUntilDeparture = (currentTime, departure) => {
   return diffMinutes;
 };
 
+
 const bus = async (ctx) => {
   const departuresList = await Promise.all(busStops.map(stop => axios.get(departuresUrl + stop.id)));
 
