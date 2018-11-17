@@ -3,6 +3,9 @@ import Router from 'koa-router';
 import cors from 'kcors';
 import parser from 'koa-bodyparser';
 import axios from 'axios';
+import x from './other';
+
+x();
 
 const app = new Koa();
 app.use(parser());
@@ -71,6 +74,7 @@ const calculateTimeUntilDeparture = (currentTime, departure) => {
   }
   return diffMinutes;
 };
+
 
 const bus = async (ctx) => {
   const departuresList = await Promise.all(busStops.map(stop => axios.get(departuresUrl + stop.id)));
