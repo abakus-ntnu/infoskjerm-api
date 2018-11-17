@@ -3,9 +3,6 @@ import Router from 'koa-router';
 import cors from 'kcors';
 import parser from 'koa-bodyparser';
 import axios from 'axios';
-import x from './other';
-
-x();
 
 const app = new Koa();
 app.use(parser());
