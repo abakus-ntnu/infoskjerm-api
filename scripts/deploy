@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ssh -tt jowie@104.248.240.152 <<EOF
+ssh -tt $1@$2 <<EOF
  cd ~/infoskjerm-api
  git pull
  npm install
