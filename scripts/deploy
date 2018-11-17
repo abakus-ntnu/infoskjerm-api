@@ -7,4 +7,4 @@ ssh -tt $1@$2 <<EOF
  npm run build
  pm2 restart infoskjerm-api
  exit
-EOF
+EOF 
