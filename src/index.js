@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import cors from 'kcors';
+import cors from '@koa/cors';
 import parser from 'koa-bodyparser';
 import router from './routes';
 
