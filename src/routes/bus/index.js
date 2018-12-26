@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Router from 'koa-router';
 
-const departuresUrl = 'https://atbapi.tar.io/api/v1/departures/';
+const departuresUrl = 'https://infoskjerm-api.koskom.no/bus/';
 
 const busStops = [
   { id: '16011265', direction: 'to', stop: 'glos' },
@@ -65,6 +65,7 @@ const bus = async (ctx) => {
 };
 
 const router = new Router();
+
 router.get('/', bus);
 
 

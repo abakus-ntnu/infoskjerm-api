@@ -7,7 +7,6 @@ const app = new Koa();
 app.use(parser());
 
 app.use(cors());
-
 app.use(router.routes());
 
 app.listen(3000);
