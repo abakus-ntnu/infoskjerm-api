@@ -65,6 +65,7 @@ const bus = async (ctx) => {
 };
 
 const router = new Router();
+
 router.get('/', bus);
 
 
