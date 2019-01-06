@@ -7,7 +7,7 @@ const dateString = () => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = (`0${(currentDate.getMonth() + 1)}`).slice(-2);
-  const currentDay = (`0${currentDate.getDay()}`).slice(-2);
+  const currentDay = (`0${currentDate.getDate()}`).slice(-2);
   const dateAfter = `date_after=${currentYear}-${currentMonth}-${currentDay}`;
   const dateBefore = `date_before=${currentYear + 1}-${currentMonth}-${currentDay}`;
   return `?${dateAfter}&${dateBefore}&page_size=30`;
@@ -15,6 +15,7 @@ const dateString = () => {
 
 
 const events = async (ctx) => {
+  console.log(eventsURL + dateString());
   const eventsFromAbakus = await axios.get(eventsURL + dateString());
   const eventsArray = eventsFromAbakus.data.results;
   ctx.body = eventsArray;
