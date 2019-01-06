@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Router from 'koa-router';
 
-const departuresUrl = 'https://infoskjerm-api.koskom.no/bus/';
+const departuresUrl = 'https://atbapi.tar.io/api/v1/departures/';
 
 const busStops = [
   { id: '16011265', direction: 'to', stop: 'glos' },
