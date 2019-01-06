@@ -15,7 +15,6 @@ const dateString = () => {
 
 
 const events = async (ctx) => {
-  console.log(eventsURL + dateString());
   const eventsFromAbakus = await axios.get(eventsURL + dateString());
   const eventsArray = eventsFromAbakus.data.results;
   ctx.body = eventsArray;
