@@ -15,9 +15,10 @@ const dateString = () => {
 
 
 const events = async (ctx) => {
+  const queryURL = eventsURL + dateString();
   const eventsFromAbakus = await axios.get(eventsURL + dateString());
   const eventsArray = eventsFromAbakus.data.results;
-  ctx.body = eventsArray;
+  ctx.body = { eventsArray, queryURL };
   const eventsId = [];
   for (let i = 0; i < eventsArray.length; i += 1) {
     eventsId.push(eventsArray[i].id);
