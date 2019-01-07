@@ -15,10 +15,10 @@ const dateString = () => {
 
 
 const events = async (ctx) => {
-  // const eventsFromAbakus = await axios.get(eventsURL + dateString());
-  // const eventsArray = eventsFromAbakus.data.results;
+  const eventsFromAbakus = await axios.get(eventsURL + dateString());
+  const eventsArray = eventsFromAbakus.data.results;
   ctx.body = eventsURL + dateString();
-  /*
+
   const eventsId = [];
   for (let i = 0; i < eventsArray.length; i += 1) {
     eventsId.push(eventsArray[i].id);
@@ -32,7 +32,6 @@ const events = async (ctx) => {
         : { time: null, id: y.data.id }));
   registrationTime = registrationTime.sort((a, b) => (a.time < b.time ? -1 : 1));
   console.log(registrationTime);
-  */
 };
 
 
