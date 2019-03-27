@@ -25,13 +25,11 @@ const events = async (ctx) => {
   }
 
   const registrationLink = await Promise.all(eventsId.map(x => axios.get(eventsURL + x)));
-  let registrationTime = registrationLink
-    .map(y => (
+  const registrationTime = registrationLink
+    .map((y, index) => (
       y.data.pools.length > 0
-        ? { time: y.data.pools[0].activationDate, id: y.data.id }
-        : { time: null, id: y.data.id }));
-  registrationTime = registrationTime.sort((a, b) => (a.time < b.time ? -1 : 1));
-  console.log(registrationTime);
+        ? eventsArray[index].registrationTime = y.data.pools[0].activationDate
+        : eventsArray[index].registrationTime = null));
 };
 
 
