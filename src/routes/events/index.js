@@ -30,6 +30,8 @@ const events = async (ctx) => {
       y.data.pools.length > 0
         ? eventsArray[index].registrationTime = y.data.pools[0].activationDate
         : eventsArray[index].registrationTime = null));
+
+  ctx.body = eventsArray;
 };
 
 
