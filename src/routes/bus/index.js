@@ -54,7 +54,7 @@ const bus = async (ctx) => {
         ...departure,
         ...{
           timeUntilDeparture: calculateTimeUntilDeparture(
-            currentTime, departure.scheduledDepartureTime,
+            currentTime, departure.registeredDepartureTime,
           ),
         },
       }));
