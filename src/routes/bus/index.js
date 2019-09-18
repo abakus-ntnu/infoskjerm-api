@@ -3,6 +3,8 @@ import Router from 'koa-router';
 
 const departuresUrl = 'https://atbapi.tar.io/api/v1/departures/';
 
+let busCache;
+
 const busStops = [
   { id: '16011265', direction: 'to', stop: 'gloshaugen' },
   { id: '16010265', direction: 'from', stop: 'gloshaugen' },
@@ -37,7 +39,7 @@ const calculateTimeUntilDeparture = (currentTime, departureTimeString) => {
 
 const arrayOfBusStopPromises = () => busStops.map(stop => axios.get(departuresUrl + stop.id));
 
-const bus = async (ctx) => {
+const getBusTimes = async () => {
   const departuresList = await Promise.all(arrayOfBusStopPromises());
 
   const stops = departuresList.map(stop => stop.data.departures);
@@ -59,8 +61,14 @@ const bus = async (ctx) => {
         },
       }));
   });
+  busCache = returnData;
+};
 
-  ctx.body = returnData;
+getBusTimes();
+setInterval(getBusTimes(), 10 * 1000);
+
+const bus = async (ctx) => {
+  ctx.body = busCache;
 };
 
 const router = new Router();
