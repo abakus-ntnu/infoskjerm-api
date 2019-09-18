@@ -4,10 +4,10 @@ import Router from 'koa-router';
 const departuresUrl = 'https://atbapi.tar.io/api/v1/departures/';
 
 const busStops = [
-  { id: '16011265', direction: 'to', stop: 'glos' },
-  { id: '16010265', direction: 'from', stop: 'glos' },
-  { id: '16011026', direction: 'to', stop: 'prof' },
-  { id: '16010026', direction: 'from', stop: 'prof' },
+  { id: '16011265', direction: 'to', stop: 'gloshaugen' },
+  { id: '16010265', direction: 'from', stop: 'gloshaugen' },
+  { id: '16011026', direction: 'to', stop: 'hesthagen' },
+  { id: '16010026', direction: 'from', stop: 'hesthagen' },
 ];
 
 const dateToFormattedMinutes = (date) => {
@@ -54,7 +54,7 @@ const bus = async (ctx) => {
         ...departure,
         ...{
           timeUntilDeparture: calculateTimeUntilDeparture(
-            currentTime, departure.scheduledDepartureTime,
+            currentTime, departure.registeredDepartureTime,
           ),
         },
       }));
