@@ -65,7 +65,7 @@ const getBusTimes = async () => {
 };
 
 getBusTimes();
-setInterval(getBusTimes(), 10 * 1000);
+setInterval(getBusTimes, 10 * 1000);
 
 const bus = async (ctx) => {
   ctx.body = busCache;
