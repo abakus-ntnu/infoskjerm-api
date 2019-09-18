@@ -17,7 +17,7 @@ const dateString = () => {
 const events = async (ctx) => {
   const eventsFromAbakus = await axios.get(eventsURL + dateString());
   const eventsArray = eventsFromAbakus.data.results;
-  ctx.body = eventsURL + dateString();
+  ctx.body = eventsArray;
 
   const eventsId = [];
   for (let i = 0; i < eventsArray.length; i += 1) {
@@ -30,6 +30,8 @@ const events = async (ctx) => {
       y.data.pools.length > 0
         ? eventsArray[index].registrationTime = y.data.pools[0].activationDate
         : eventsArray[index].registrationTime = null));
+
+  ctx.body = eventsArray;
 };
 
 
