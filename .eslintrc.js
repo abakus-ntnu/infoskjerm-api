@@ -9,5 +9,10 @@ module.exports = {
     "node": true,
   },
  "rules":{
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
   }
 };

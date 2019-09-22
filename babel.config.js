@@ -1,4 +1,4 @@
-module.exports = function (api) {
+module.exports = function babel(api) {
   const presets = [
     [
       '@babel/env',
@@ -10,7 +10,11 @@ module.exports = function (api) {
       },
     ],
   ];
-  const plugins = [];
+  const plugins = [
+    ['module-resolver', {
+      root: ['./src'],
+    }],
+  ];
 
   api.cache(true);
   return {
