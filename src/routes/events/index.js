@@ -28,11 +28,12 @@ const getEventsFromAbakus = async () => {
   const registrationLink = await Promise.all(
     eventsId.map(x => axios.get(eventsURL + x)),
   );
-  registrationLink.forEach((y, index) =>
-    (y.data.pools.length > 0
-      ? (eventsArray[index].registrationTime = y.data.pools[0].activationDate)
-      : (eventsArray[index].registrationTime = null)),
-  );
+
+  for (let i = 0; i < registrationLink.length; i += 1) {
+    eventsArray[i].registrationTime = registrationLink[i].data.pools.length > 0
+      ? (registrationLink[i].data.pools[0].activationDate)
+      : null;
+  }
   eventsCache = eventsArray;
 };
 
