@@ -1,7 +1,6 @@
 import xRay from 'x-ray';
 import moment from 'moment-timezone';
 
-8;
 const formattedTimeToDeparture = (departureTime, diffMinutes) => {
   if (diffMinutes <= 1) {
     return 'Nå';
