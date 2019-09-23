@@ -1,6 +1,6 @@
 import Router from 'koa-router';
-import { getRealtimeBuses } from 'utils';
 import { stops } from 'constants';
+import { getRealtimeBuses } from 'utils';
 
 let busCache;
 

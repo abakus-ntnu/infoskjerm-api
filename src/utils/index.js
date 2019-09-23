@@ -1,7 +1,6 @@
 import xRay from 'x-ray';
 import moment from 'moment-timezone';
 
-
 const formattedTimeToDeparture = (departureTime, diffMinutes) => {
   if (diffMinutes <= 1) {
     return 'Nå';
@@ -37,7 +36,7 @@ const formatBusStop = (list) => {
   const { hasrealtime, nonrealtime } = list;
   const final = [];
   const currentTime = moment(new Date().toUTCString()).tz('Europe/Oslo').format('HH:mm');
-  for (let i = 0; i < nonrealtime.length; i += 1) {
+  for (let i = 0; i < Math.min(nonrealtime.length, 5); i += 1) {
     const bus = nonrealtime[i];
     final[i] = {
       ...nonrealtime[i],
