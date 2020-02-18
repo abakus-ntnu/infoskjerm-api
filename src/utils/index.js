@@ -20,13 +20,13 @@ const minutesSinceMidnight = time => parseInt(time.substring(0, 2), 10) * 60
 const differenceInMinutes = (currentTime, busTime) => {
   const currentTimeInMinutes = minutesSinceMidnight(currentTime);
   const busTimeInMinutes = minutesSinceMidnight(busTime);
-  console.log(busTimeInMinutes - currentTimeInMinutes);
+  // console.log(busTimeInMinutes - currentTimeInMinutes);
   if (busTimeInMinutes - currentTimeInMinutes < 0) { return (busTime + 60 * 24) - currentTimeInMinutes; }
   return busTimeInMinutes - currentTimeInMinutes;
 };
 
 const formatTime = (currentTime, time) => {
-  console.log({ test: currentTime, test2: time });
+  // console.log({ test: currentTime, test2: time });
   const diff = differenceInMinutes(currentTime, time);
   return formattedTimeToDeparture(time, diff);
 };
