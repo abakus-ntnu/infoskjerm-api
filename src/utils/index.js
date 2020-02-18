@@ -33,29 +33,32 @@ const x = xRay({
 });
 
 const formatBusStop = (list) => {
-  const { hasrealtime, nonrealtime } = list;
-  const final = [];
-  const currentTime = moment(new Date().toUTCString()).tz('Europe/Oslo').format('HH:mm');
-  for (let i = 0; i < Math.min(nonrealtime.length, 5); i += 1) {
-    const bus = nonrealtime[i];
-    final[i] = {
-      ...nonrealtime[i],
-      ...{
-        realtime: hasrealtime.some(el => (el.time === bus.time
-          && el.number === bus.number && el.bus === bus.bus)),
-      },
-    };
-    final[i].time = formatTime(currentTime, final[i].time.trim());
-    final[i].bus = final[i].bus.trim();
-    final[i].number = final[i].number.trim();
+  if (list) {
+    const { hasrealtime, nonrealtime } = list;
+    const final = [];
+    const currentTime = moment(new Date().toUTCString()).tz('Europe/Oslo').format('HH:mm');
+    for (let i = 0; i < Math.min(nonrealtime.length, 5); i += 1) {
+      const bus = nonrealtime[i];
+      final[i] = {
+        ...nonrealtime[i],
+        ...{
+          realtime: hasrealtime.some(el => (el.time === bus.time
+            && el.number === bus.number && el.bus === bus.bus)),
+        },
+      };
+      final[i].time = formatTime(currentTime, final[i].time.trim());
+      final[i].bus = final[i].bus.trim();
+      final[i].number = final[i].number.trim();
+    }
+    return final;
   }
-  return final;
 };
 
 const getRealtimeBuses = async (stop) => {
-  const result = await x(`https://rp.atb.no/scripts/TravelMagic/TravelMagicWE.dll/svar?dep1=1&from=${stop}`, {
+  let result = { lists: [], to: [] };
+  result = await x(`https://rp.atb.no/scripts/TravelMagic/TravelMagicWE.dll/svar?dep1=1&from=${stop}`, {
     lists: x('ul.ui-helper-reset.tm-group-header-list', [{
-      hasrealtime: x('li.ui-state-default.tm-overvaket', [{
+      hasrealtime: x('li.ui-state-default.tm-nytid', [{
         time: x('.tm-block-float.tm-departurelist-time'),
         bus: x('.tm-departurelist-destination.tm-alpha6'),
         number: x('.tm-departurelist-linename'),
@@ -65,12 +68,12 @@ const getRealtimeBuses = async (stop) => {
         bus: x('.tm-departurelist-destination.tm-alpha6'),
         number: x('.tm-departurelist-linename'),
       }]),
-
     }]),
   }).then(res => res).catch((e) => {
     console.log(e);
     return e;
   });
+  formatBusStop(result.lists[1]);
   const formated = {
     from: formatBusStop(result.lists[0]),
     to: formatBusStop(result.lists[1]),
