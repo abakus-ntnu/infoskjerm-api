@@ -34,7 +34,7 @@
     "koa-logger": "^3.2.1",
     "koa-router": "^7.4.0",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.26",
+    "moment-timezone": "^0.5.35",
     "x-ray": "^2.3.4"
   }
 }
